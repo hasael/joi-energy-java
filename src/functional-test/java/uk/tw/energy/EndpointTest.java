@@ -66,11 +66,18 @@ public class EndpointTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
+    @Test
+    public void returnCompetitionWinner() {
+
+        ResponseEntity<String> response = restTemplate.getForEntity("/competition/winner", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
     private HttpEntity<String> getStringHttpEntity(Object object) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String jsonMeterData = mapper.writeValueAsString(object);
-        return (HttpEntity<String>) new HttpEntity(jsonMeterData,headers);
+        return (HttpEntity<String>) new HttpEntity(jsonMeterData, headers);
     }
 
     private void populateMeterReadingsForMeter(String smartMeterId) throws JsonProcessingException {

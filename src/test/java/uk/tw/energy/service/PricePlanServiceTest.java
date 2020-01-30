@@ -12,6 +12,7 @@ import java.time.*;
 import java.util.*;
 
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -95,5 +96,40 @@ public class PricePlanServiceTest {
 
         //THEN
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void calculatePricePerCurrentPlan() {
+
+        //GIVEN
+        PricePlan pricePlan1 = new PricePlan(PRICE_PLAN_1_ID, null, BigDecimal.ONE, emptyList());
+        PricePlan pricePlan2 = new PricePlan(PRICE_PLAN_2_ID, null, BigDecimal.TEN, emptyList());
+        PricePlan pricePlan3 = new PricePlan(PRICE_PLAN_3_ID, null, BigDecimal.valueOf(2), emptyList());
+        List<PricePlan> pricePlanList = Arrays.asList(pricePlan1, pricePlan2, pricePlan3);
+
+        Instant time1 = ZonedDateTime.of(LocalDateTime.of(2020, Month.JANUARY, 30, 12, 0, 0), ZoneId.systemDefault()).toInstant();
+        Instant time2 = ZonedDateTime.of(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0, 0), ZoneId.systemDefault()).toInstant();
+        ElectricityReading reading1 = new ElectricityReading(time1, BigDecimal.valueOf(0.55));
+        ElectricityReading reading2 = new ElectricityReading(time2, BigDecimal.valueOf(0.65));
+        List<ElectricityReading> electricityReadings = Arrays.asList(reading1, reading2);
+
+        when(mockMeterReadingService.getReadings(SMART_METER_ID)).thenReturn(Optional.of(electricityReadings));
+
+        //WHEN
+        PricePlanService sut = new PricePlanService(pricePlanList, mockMeterReadingService);
+
+        //THEN
+        Optional<BigDecimal> expected1 = Optional.of(BigDecimal.valueOf(0.60));
+        Optional<BigDecimal> expected2 = Optional.of(BigDecimal.valueOf(6.0));
+        Optional<BigDecimal> expected3 = Optional.of(BigDecimal.valueOf(1.20));
+
+        Optional<BigDecimal> actual1 = sut.getConsumptionCostPerPlan(SMART_METER_ID, PRICE_PLAN_1_ID);
+        Optional<BigDecimal> actual2 = sut.getConsumptionCostPerPlan(SMART_METER_ID, PRICE_PLAN_2_ID);
+        Optional<BigDecimal> actual3 = sut.getConsumptionCostPerPlan(SMART_METER_ID, PRICE_PLAN_3_ID);
+
+        assertEquals(0,expected1.get().compareTo(actual1.get()));
+        assertEquals(0,expected2.get().compareTo(actual2.get()));
+        assertEquals(0,expected3.get().compareTo(actual3.get()));
+
     }
 }

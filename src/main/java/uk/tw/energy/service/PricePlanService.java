@@ -29,6 +29,14 @@ public class PricePlanService {
         this.meterReadingService = meterReadingService;
     }
 
+    public Optional<BigDecimal> getConsumptionCostPerPlan(String smartMeterId, String planId) {
+
+        return meterReadingService.getReadings(smartMeterId)
+                .flatMap(reading -> pricePlans.stream()
+                        .filter(x -> x.getPlanName().equals(planId))
+                        .findFirst().map(plan -> calculateCost(reading, plan)));
+    }
+
     public Optional<Map<String, BigDecimal>> getConsumptionCostOfElectricityReadingsForEachPricePlan(String smartMeterId) {
         Optional<List<ElectricityReading>> electricityReadings = meterReadingService.getReadings(smartMeterId);
 
