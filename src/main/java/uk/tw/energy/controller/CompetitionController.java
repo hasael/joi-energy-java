@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.tw.energy.service.AccountService;
 import uk.tw.energy.service.PricePlanService;
+import uk.tw.energy.viewModels.CompetitionWinner;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -25,7 +26,7 @@ public class CompetitionController {
     }
 
     @GetMapping("/winner")
-    public ResponseEntity<Pair<String, BigDecimal>> getWinner() {
+    public ResponseEntity<CompetitionWinner> getWinner() {
 
         List<String> users = accountService.getEnrolledUsers();
         if (users.isEmpty()) {
@@ -34,6 +35,7 @@ public class CompetitionController {
             return ResponseEntity.ok(users.stream()
                     .map(user -> new Pair<>(user, pricePlanService.getConsumptionCostPerPlan(user, accountService.getPricePlanIdForSmartMeterId(user)).orElse(BigDecimal.ZERO)))
                     .min(Comparator.comparing(Pair::getValue))
+                    .map(p -> new CompetitionWinner(p.getKey(), p.getValue()))
                     .get());
         }
     }

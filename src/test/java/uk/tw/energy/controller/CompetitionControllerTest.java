@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import uk.tw.energy.service.AccountService;
 import uk.tw.energy.service.PricePlanService;
+import uk.tw.energy.viewModels.CompetitionWinner;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -56,9 +57,9 @@ public class CompetitionControllerTest {
 
         CompetitionController sut = new CompetitionController(mockAccountService, mockPricePlanService);
 
-        ResponseEntity<Pair<String, BigDecimal>> actual = sut.getWinner();
+        ResponseEntity<CompetitionWinner> actual = sut.getWinner();
 
-        ResponseEntity<Pair<String, BigDecimal>> expected = ResponseEntity.ok(new Pair<>(user2, cost2));
+        ResponseEntity<CompetitionWinner> expected = ResponseEntity.ok(new CompetitionWinner(user2, cost2));
 
         assertEquals(expected, actual);
     }

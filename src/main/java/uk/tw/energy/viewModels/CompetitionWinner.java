@@ -1,7 +1,10 @@
 package uk.tw.energy.viewModels;
 
+import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 
+@EqualsAndHashCode
 public class CompetitionWinner {
 
     private final String smartReaderId;
