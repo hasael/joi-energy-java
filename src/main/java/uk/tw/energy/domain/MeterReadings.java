@@ -1,15 +1,17 @@
 package uk.tw.energy.domain;
 
+import uk.tw.energy.types.MeterId;
+
 import java.util.List;
 
 public class MeterReadings {
 
     private List<ElectricityReading> electricityReadings;
-    private String smartMeterId;
+    private MeterId smartMeterId;
 
     public MeterReadings() { }
 
-    public MeterReadings(String smartMeterId, List<ElectricityReading> electricityReadings) {
+    public MeterReadings(MeterId smartMeterId, List<ElectricityReading> electricityReadings) {
         this.smartMeterId = smartMeterId;
         this.electricityReadings = electricityReadings;
     }
@@ -18,7 +20,7 @@ public class MeterReadings {
         return electricityReadings;
     }
 
-    public String getSmartMeterId() {
+    public MeterId getSmartMeterId() {
         return smartMeterId;
     }
 }
