@@ -48,6 +48,8 @@ dependencies {
     testCompile 'junit:junit:4.12',
             'org.assertj:assertj-core:3.8.0',
             'org.springframework.boot:spring-boot-starter-test:2.0.0.M3'
+
+    compileOnly 'org.projectlombok:lombok:1.18.10'
 }
 
 // Define the main class for the application
