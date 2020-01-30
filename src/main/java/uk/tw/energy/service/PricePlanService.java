@@ -54,13 +54,13 @@ public class PricePlanService {
                 .get();
 
         BigDecimal calculatedAverage = BigDecimal.ZERO;
-        int i = 1;
+        int i = 0;
         do {
             Instant time = first.getTime().plus(Duration.ofMinutes(i));
             LocalDateTime date = LocalDateTime.ofInstant(time, ZoneId.systemDefault());
             calculatedAverage = calculatedAverage.add(averagedCost.multiply(pricePlan.getPrice(date)));
             i++;
-        } while (i <= timeElapsed.multiply(BigDecimal.valueOf(60)).longValue());
+        } while (i < timeElapsed.multiply(BigDecimal.valueOf(60)).longValue());
         return calculatedAverage.divide(timeElapsed.multiply(BigDecimal.valueOf(60)), RoundingMode.HALF_UP);
 
     }

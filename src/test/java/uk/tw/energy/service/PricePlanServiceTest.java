@@ -8,7 +8,7 @@ import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.PricePlan;
 
 import java.math.BigDecimal;
-import java.time.DayOfWeek;
+import java.time.*;
 import java.util.*;
 
 import static java.util.Collections.emptyList;
@@ -34,15 +34,11 @@ public class PricePlanServiceTest {
         PricePlan pricePlan2 = new PricePlan(PRICE_PLAN_2_ID, null, BigDecimal.ONE, emptyList());
         PricePlan pricePlan3 = new PricePlan(PRICE_PLAN_3_ID, null, BigDecimal.valueOf(2), emptyList());
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2020);
-        cal.set(Calendar.MONTH, Calendar.JANUARY);
-        cal.set(Calendar.DAY_OF_MONTH, 30);
-        Date thursday = cal.getTime();
-        cal.set(Calendar.DAY_OF_MONTH, 31);
-        Date friday = cal.getTime();
-        ElectricityReading reading1 = new ElectricityReading(thursday.toInstant(), BigDecimal.valueOf(1.0));
-        ElectricityReading reading2 = new ElectricityReading(friday.toInstant(), BigDecimal.valueOf(2.0));
+        Instant thursday = ZonedDateTime.of(LocalDateTime.of(2020, 1, 30, 12, 0), ZoneId.systemDefault()).toInstant();
+        Instant friday = ZonedDateTime.of(LocalDateTime.of(2020, 1, 31, 12, 0), ZoneId.systemDefault()).toInstant();
+
+        ElectricityReading reading1 = new ElectricityReading(thursday, BigDecimal.valueOf(1.0));
+        ElectricityReading reading2 = new ElectricityReading(friday, BigDecimal.valueOf(2.0));
 
         List<ElectricityReading> electricityReadings = Arrays.asList(reading1, reading2);
 
@@ -71,21 +67,14 @@ public class PricePlanServiceTest {
 
         //GIVEN
         PricePlan pricePlan1 = new PricePlan(PRICE_PLAN_1_ID, null, BigDecimal.TEN, emptyList());
-
         PricePlan pricePlan2 = new PricePlan(PRICE_PLAN_2_ID, null, BigDecimal.ONE, Arrays.asList(new PricePlan.PeakTimeMultiplier(DayOfWeek.FRIDAY, BigDecimal.TEN)));
         PricePlan pricePlan3 = new PricePlan(PRICE_PLAN_3_ID, null, BigDecimal.valueOf(2), emptyList());
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2020);
-        cal.set(Calendar.MONTH, Calendar.JANUARY);
-        cal.set(Calendar.DAY_OF_MONTH, 30);
-        cal.set(Calendar.HOUR, 12);
-        cal.set(Calendar.MINUTE, 0);
-        Date thursday = cal.getTime();
-        cal.set(Calendar.DAY_OF_MONTH, 31);
-        Date friday = cal.getTime();
-        ElectricityReading reading1 = new ElectricityReading(thursday.toInstant(), BigDecimal.valueOf(1.0));
-        ElectricityReading reading2 = new ElectricityReading(friday.toInstant(), BigDecimal.valueOf(2.0));
+        Instant thursday = ZonedDateTime.of(LocalDateTime.of(2020, 1, 30, 12, 0), ZoneId.systemDefault()).toInstant();
+        Instant friday = ZonedDateTime.of(LocalDateTime.of(2020, 1, 31, 12, 0), ZoneId.systemDefault()).toInstant();
+
+        ElectricityReading reading1 = new ElectricityReading(thursday, BigDecimal.valueOf(1.0));
+        ElectricityReading reading2 = new ElectricityReading(friday, BigDecimal.valueOf(2.0));
 
         List<ElectricityReading> electricityReadings = Arrays.asList(reading1, reading2);
 
