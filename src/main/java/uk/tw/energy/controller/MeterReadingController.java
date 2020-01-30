@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.MeterReadings;
 import uk.tw.energy.service.MeterReadingService;
+import uk.tw.energy.types.MeterId;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,15 +31,15 @@ public class MeterReadingController {
     }
 
     private boolean isMeterReadingsValid(MeterReadings meterReadings) {
-        String smartMeterId = meterReadings.getSmartMeterId();
+        MeterId smartMeterId = meterReadings.getSmartMeterId();
         List<ElectricityReading> electricityReadings = meterReadings.getElectricityReadings();
-        return smartMeterId != null && !smartMeterId.isEmpty()
+        return smartMeterId != null && !smartMeterId.getValue().isEmpty()
                 && electricityReadings != null && !electricityReadings.isEmpty();
     }
 
     @GetMapping("/read/{smartMeterId}")
     public ResponseEntity readReadings(@PathVariable String smartMeterId) {
-        Optional<List<ElectricityReading>> readings = meterReadingService.getReadings(smartMeterId);
+        Optional<List<ElectricityReading>> readings = meterReadingService.getReadings(MeterId.of(smartMeterId));
         return readings.isPresent()
                 ? ResponseEntity.ok(readings.get())
                 : ResponseEntity.notFound().build();

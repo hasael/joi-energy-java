@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.tw.energy.builders.MeterReadingsBuilder;
 import uk.tw.energy.domain.MeterReadings;
+import uk.tw.energy.types.MeterId;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -81,7 +82,8 @@ public class EndpointTest {
     }
 
     private void populateMeterReadingsForMeter(String smartMeterId) throws JsonProcessingException {
-        MeterReadings readings = new MeterReadingsBuilder().setSmartMeterId(smartMeterId)
+        MeterId meterId = MeterId.of(smartMeterId);
+        MeterReadings readings = new MeterReadingsBuilder().setSmartMeterId(meterId)
                 .generateElectricityReadings(20)
                 .build();
 

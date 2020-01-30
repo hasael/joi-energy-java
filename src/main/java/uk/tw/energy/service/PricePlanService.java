@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.PricePlan;
+import uk.tw.energy.types.MeterId;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -29,7 +30,7 @@ public class PricePlanService {
         this.meterReadingService = meterReadingService;
     }
 
-    public Optional<BigDecimal> getConsumptionCostPerPlan(String smartMeterId, String planId) {
+    public Optional<BigDecimal> getConsumptionCostPerPlan(MeterId smartMeterId, String planId) {
 
         return meterReadingService.getReadings(smartMeterId)
                 .flatMap(reading -> pricePlans.stream()
@@ -37,7 +38,7 @@ public class PricePlanService {
                         .findFirst().map(plan -> calculateCost(reading, plan)));
     }
 
-    public Optional<Map<String, BigDecimal>> getConsumptionCostOfElectricityReadingsForEachPricePlan(String smartMeterId) {
+    public Optional<Map<String, BigDecimal>> getConsumptionCostOfElectricityReadingsForEachPricePlan(MeterId smartMeterId) {
         Optional<List<ElectricityReading>> electricityReadings = meterReadingService.getReadings(smartMeterId);
 
         if (!electricityReadings.isPresent()) {

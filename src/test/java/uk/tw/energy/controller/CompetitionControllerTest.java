@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import uk.tw.energy.service.AccountService;
 import uk.tw.energy.service.PricePlanService;
+import uk.tw.energy.types.MeterId;
 import uk.tw.energy.viewModels.CompetitionWinner;
 
 import java.math.BigDecimal;
@@ -30,9 +31,9 @@ public class CompetitionControllerTest {
 
     @Test
     public void returnCorrectValue() {
-        String user1 = "user1";
-        String user2 = "user2";
-        String user3 = "user3";
+        MeterId user1 = MeterId.of("user1");
+        MeterId user2 = MeterId.of("user2");
+        MeterId user3 = MeterId.of("user3");
 
         String plan1 = "plan1";
         String plan2 = "plan2";
@@ -41,7 +42,7 @@ public class CompetitionControllerTest {
         BigDecimal cost1 = BigDecimal.ONE;
         BigDecimal cost2 = BigDecimal.valueOf(0.5);
         BigDecimal cost3 = BigDecimal.TEN;
-        List<String> users = Arrays.asList(user1, user2, user3);
+        List<MeterId> users = Arrays.asList(user1, user2, user3);
 
         when(mockAccountService.getEnrolledUsers()).thenReturn(users);
         when(mockAccountService.getPricePlanIdForSmartMeterId(user1)).thenReturn(plan1);
@@ -59,7 +60,7 @@ public class CompetitionControllerTest {
 
         ResponseEntity<CompetitionWinner> actual = sut.getWinner();
 
-        ResponseEntity<CompetitionWinner> expected = ResponseEntity.ok(new CompetitionWinner(user2, cost2));
+        ResponseEntity<CompetitionWinner> expected = ResponseEntity.ok(new CompetitionWinner(user2.getValue(), cost2));
 
         assertEquals(expected, actual);
     }

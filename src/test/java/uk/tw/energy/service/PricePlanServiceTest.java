@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.PricePlan;
+import uk.tw.energy.types.MeterId;
 
 import java.math.BigDecimal;
 import java.time.*;
@@ -14,6 +15,7 @@ import java.util.*;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +24,7 @@ public class PricePlanServiceTest {
     private static final String PRICE_PLAN_1_ID = "test-supplier";
     private static final String PRICE_PLAN_2_ID = "best-supplier";
     private static final String PRICE_PLAN_3_ID = "second-best-supplier";
-    private static final String SMART_METER_ID = "smart-meter-id";
+    private static final MeterId SMART_METER_ID = MeterId.of("smart-meter-id");
 
     @Mock
     MeterReadingService mockMeterReadingService;
@@ -44,7 +46,7 @@ public class PricePlanServiceTest {
         List<ElectricityReading> electricityReadings = Arrays.asList(reading1, reading2);
 
         List<PricePlan> pricePlans = Arrays.asList(pricePlan1, pricePlan2, pricePlan3);
-        when(mockMeterReadingService.getReadings(anyString())).thenReturn(Optional.of(electricityReadings));
+        when(mockMeterReadingService.getReadings(any(MeterId.class))).thenReturn(Optional.of(electricityReadings));
 
         PricePlanService sut = new PricePlanService(pricePlans, mockMeterReadingService);
 
@@ -80,7 +82,7 @@ public class PricePlanServiceTest {
         List<ElectricityReading> electricityReadings = Arrays.asList(reading1, reading2);
 
         List<PricePlan> pricePlans = Arrays.asList(pricePlan1, pricePlan2, pricePlan3);
-        when(mockMeterReadingService.getReadings(anyString())).thenReturn(Optional.of(electricityReadings));
+        when(mockMeterReadingService.getReadings(any(MeterId.class))).thenReturn(Optional.of(electricityReadings));
 
         PricePlanService sut = new PricePlanService(pricePlans, mockMeterReadingService);
 
@@ -127,9 +129,9 @@ public class PricePlanServiceTest {
         Optional<BigDecimal> actual2 = sut.getConsumptionCostPerPlan(SMART_METER_ID, PRICE_PLAN_2_ID);
         Optional<BigDecimal> actual3 = sut.getConsumptionCostPerPlan(SMART_METER_ID, PRICE_PLAN_3_ID);
 
-        assertEquals(0,expected1.get().compareTo(actual1.get()));
-        assertEquals(0,expected2.get().compareTo(actual2.get()));
-        assertEquals(0,expected3.get().compareTo(actual3.get()));
+        assertEquals(0, expected1.get().compareTo(actual1.get()));
+        assertEquals(0, expected2.get().compareTo(actual2.get()));
+        assertEquals(0, expected3.get().compareTo(actual3.get()));
 
     }
 }

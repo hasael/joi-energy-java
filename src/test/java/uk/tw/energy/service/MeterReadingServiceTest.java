@@ -2,6 +2,7 @@ package uk.tw.energy.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import uk.tw.energy.types.MeterId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,12 +21,12 @@ public class MeterReadingServiceTest {
 
     @Test
     public void givenMeterIdThatDoesNotExistShouldReturnNull() {
-        assertThat(meterReadingService.getReadings("unknown-id")).isEqualTo(Optional.empty());
+        assertThat(meterReadingService.getReadings(MeterId.of("unknown-id"))).isEqualTo(Optional.empty());
     }
 
     @Test
     public void givenMeterReadingThatExistsShouldReturnMeterReadings() {
-        meterReadingService.storeReadings("random-id", new ArrayList<>());
-        assertThat(meterReadingService.getReadings("random-id")).isEqualTo(Optional.of(new ArrayList<>()));
+        meterReadingService.storeReadings(MeterId.of("random-id"), new ArrayList<>());
+        assertThat(meterReadingService.getReadings(MeterId.of("random-id"))).isEqualTo(Optional.of(new ArrayList<>()));
     }
 }

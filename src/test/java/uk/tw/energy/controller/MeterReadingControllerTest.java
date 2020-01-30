@@ -9,6 +9,7 @@ import uk.tw.energy.builders.MeterReadingsBuilder;
 import uk.tw.energy.domain.ElectricityReading;
 import uk.tw.energy.domain.MeterReadings;
 import uk.tw.energy.service.MeterReadingService;
+import uk.tw.energy.types.MeterId;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +23,7 @@ public class MeterReadingControllerTest {
 
     private MeterReadingController meterReadingController;
     private MeterReadingService meterReadingService;
-    private static final String SMART_METER_ID = "10101010";
+    private static final MeterId SMART_METER_ID = MeterId.of("10101010");
 
     @Before
     public void setUp() {
@@ -75,7 +76,7 @@ public class MeterReadingControllerTest {
                 .generateElectricityReadings()
                 .build();
 
-        MeterReadings otherMeterReadings = new MeterReadingsBuilder().setSmartMeterId("00001")
+        MeterReadings otherMeterReadings = new MeterReadingsBuilder().setSmartMeterId(MeterId.of("00001"))
                 .generateElectricityReadings()
                 .build();
 
@@ -87,7 +88,7 @@ public class MeterReadingControllerTest {
 
     @Test
     public void givenMeterIdThatIsNotRecognisedShouldReturnNotFound() {
-        assertThat(meterReadingController.readReadings(SMART_METER_ID).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(meterReadingController.readReadings(SMART_METER_ID.getValue()).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
 }
