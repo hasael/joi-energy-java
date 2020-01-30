@@ -36,7 +36,7 @@ public class PricePlanTest {
     }
 
     @Test
-    public void shouldReturnAnExceptionPriceGivenExceptionalDateTime() throws Exception {
+    public void shouldReturnAnExceptionalPriceGivenExceptionalDateTime() throws Exception {
         LocalDateTime exceptionalDateTime = LocalDateTime.of(2017, Month.AUGUST, 30, 23, 0, 0);
         PricePlan.PeakTimeMultiplier peakTimeMultiplier = new PricePlan.PeakTimeMultiplier(DayOfWeek.WEDNESDAY, BigDecimal.TEN);
         PricePlan pricePlan = new PricePlan(null, null, BigDecimal.ONE, singletonList(peakTimeMultiplier));

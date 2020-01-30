@@ -33,13 +33,14 @@ public class PricePlan {
     }
 
     public BigDecimal getPrice(LocalDateTime dateTime) {
+
         Optional<PeakTimeMultiplier> peakTimeMultiplier = peakTimeMultipliers.stream()
                 .filter(multiplier -> multiplier.dayOfWeek.equals(dateTime.getDayOfWeek())).findFirst();
         return peakTimeMultiplier.map(multiplier -> unitRate.multiply(multiplier.multiplier)).orElse(unitRate);
     }
 
 
-    static class PeakTimeMultiplier {
+   public static class PeakTimeMultiplier {
 
         DayOfWeek dayOfWeek;
         BigDecimal multiplier;

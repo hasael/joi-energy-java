@@ -10,12 +10,7 @@ import uk.tw.energy.service.MeterReadingService;
 import uk.tw.energy.service.PricePlanService;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.AbstractMap;
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -34,9 +29,9 @@ public class PricePlanComparatorControllerTest {
     @Before
     public void setUp() {
         meterReadingService = new MeterReadingService(new HashMap<>());
-        PricePlan pricePlan1 = new PricePlan(PRICE_PLAN_1_ID, null, BigDecimal.TEN, null);
-        PricePlan pricePlan2 = new PricePlan(PRICE_PLAN_2_ID, null, BigDecimal.ONE, null);
-        PricePlan pricePlan3 = new PricePlan(PRICE_PLAN_3_ID, null, BigDecimal.valueOf(2), null);
+        PricePlan pricePlan1 = new PricePlan(PRICE_PLAN_1_ID, null, BigDecimal.TEN, Collections.emptyList());
+        PricePlan pricePlan2 = new PricePlan(PRICE_PLAN_2_ID, null, BigDecimal.ONE, Collections.emptyList());
+        PricePlan pricePlan3 = new PricePlan(PRICE_PLAN_3_ID, null, BigDecimal.valueOf(2), Collections.emptyList());
 
         List<PricePlan> pricePlans = Arrays.asList(pricePlan1, pricePlan2, pricePlan3);
         PricePlanService tariffService = new PricePlanService(pricePlans, meterReadingService);
